@@ -26,11 +26,13 @@ const DashboardProyek = () => {
                 API.get("/proyek"),
                 API.get("/kontraktor")
             ]);
-            setProyek(proyekRes.data);
-            setKontraktor(kontraktorRes.data);
+            setProyek(Array.isArray(proyekRes.data) ? proyekRes.data : []);
+            setKontraktor(Array.isArray(kontraktorRes.data) ? kontraktorRes.data : []);
             setLoading(false);
         } catch (err) {
             console.error(err);
+            setProyek([]);
+            setKontraktor([]);
             setLoading(false);
         }
     };
@@ -55,7 +57,13 @@ const DashboardProyek = () => {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
     return (
         <div>

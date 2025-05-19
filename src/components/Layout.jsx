@@ -1,42 +1,56 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+const menuItems = [
+    { path: '/laporan', label: 'Laporan', icon: null },
+    { path: '/kontraktor', label: 'Kontraktor', icon: null },
+    { path: '/material', label: 'Material', icon: null },
+    { path: '/proyek', label: 'Proyek', icon: null },
+];
+
 const Layout = ({ children }) => {
     const location = useLocation();
 
-    const menuItems = [
-        { path: '/proyek', label: 'Proyek', icon: '🏗️' },
-        { path: '/kontraktor', label: 'Kontraktor', icon: '👷' },
-        { path: '/material', label: 'Material', icon: '🏭' },
-        { path: '/laporan', label: 'Laporan', icon: '📊' },
-    ];
+    // Ambil judul halaman dari menu aktif
+    const activeMenu = menuItems.find(item => location.pathname.startsWith(item.path));
+    const pageTitle = activeMenu ? activeMenu.label : '';
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <div className="w-64 bg-white shadow-lg fixed h-full">
-                <div className="p-4 border-b">
-                    <h1 className="text-xl font-bold text-gray-800">Manajemen Konstruksi</h1>
+            <aside className="w-64 border-r border-gray-200 bg-gray-50 flex flex-col">
+                <div className="px-6 py-6 border-b border-gray-200">
+                    <h1 className="text-lg font-bold text-gray-800">Sistem Konstruksi</h1>
                 </div>
-                <nav className="mt-4">
-                    {menuItems.map((item) => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors
-                                ${location.pathname.startsWith(item.path) ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : ''}`}
-                        >
-                            <span className="mr-3">{item.icon}</span>
-                            {item.label}
-                        </Link>
-                    ))}
+                <nav className="flex-1 mt-4">
+                    {menuItems.map((item) => {
+                        const isActive = location.pathname.startsWith(item.path);
+                        return (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                className={`flex items-center px-6 py-2 mb-1 rounded-l-lg transition
+                                    ${isActive
+                                        ? 'bg-gray-100 font-semibold text-gray-900'
+                                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                                    }`}
+                            >
+                                {item.icon && <span className="mr-3">{item.icon}</span>}
+                                {item.label}
+                            </Link>
+                        );
+                    })}
                 </nav>
-            </div>
+            </aside>
 
             {/* Main Content */}
-            <div className="ml-64 flex-1 p-8">
-                {children}
-            </div>
+            <main className="flex-1 min-h-screen">
+                {/* Header */}
+                <header className="h-16 flex items-center border-b border-gray-200 bg-white px-8">
+                    <span className="text-lg font-semibold text-gray-800">{pageTitle}</span>
+                </header>
+                <div className="p-8">{children}</div>
+            </main>
         </div>
     );
 };

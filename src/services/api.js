@@ -6,9 +6,10 @@ const API = axios.create({
         "Content-Type": "application/json",
         "Accept": "application/json"
     },
-    timeout: 5000
+    timeout: 10000 // Increase timeout
 });
 
+// Add detailed logging
 API.interceptors.request.use(
     config => {
         console.log("API Request:", {
@@ -34,17 +35,11 @@ API.interceptors.response.use(
         return response;
     },
     error => {
-        if (error.response) {
-            console.error("Response Error:", {
-                status: error.response.status,
-                data: error.response.data,
-                headers: error.response.headers
-            });
-        } else if (error.request) {
-            console.error("Request Error:", error.request);
-        } else {
-            console.error("Error:", error.message);
-        }
+        console.error("Response Error:", {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status
+        });
         return Promise.reject(error);
     }
 );

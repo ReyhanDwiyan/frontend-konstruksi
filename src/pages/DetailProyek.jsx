@@ -39,7 +39,8 @@ const DetailProyek = () => {
 
         // Fetch kontraktor data
         const kontraktorRes = await API.get("/kontraktor");
-        const matchingKontraktor = kontraktorRes.data.find(
+        const kontraktorList = Array.isArray(kontraktorRes.data) ? kontraktorRes.data : [];
+        const matchingKontraktor = kontraktorList.find(
             k => k.id === proyekRes.data.kontraktor_id
         );
         setKontraktor(matchingKontraktor);
@@ -88,13 +89,13 @@ const DetailProyek = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="container mx-auto px-4 py-8 bg-black min-h-screen">
+            <div className="bg-gray-900 rounded-lg shadow-lg p-6">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold text-gray-800">Detail Proyek</h1>
+                    <h1 className="text-2xl font-bold text-white">Detail Proyek</h1>
                     <button
                         onClick={() => navigate("/")}
-                        className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                        className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
                     >
                         Kembali
                     </button>
@@ -102,38 +103,33 @@ const DetailProyek = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <h3 className="text-gray-600 mb-2">Nama Proyek</h3>
-                        <p className="text-xl font-semibold">{proyek.nama}</p>
+                        <h3 className="text-gray-300 mb-2">Nama Proyek</h3>
+                        <p className="text-xl font-semibold text-white">{proyek.nama}</p>
                     </div>
-
                     <div>
-                        <h3 className="text-gray-600 mb-2">Lokasi</h3>
-                        <p className="text-xl">{proyek.lokasi}</p>
+                        <h3 className="text-gray-300 mb-2">Lokasi</h3>
+                        <p className="text-xl text-white">{proyek.lokasi}</p>
                     </div>
-
                     <div>
-                        <h3 className="text-gray-600 mb-2">Tanggal Mulai</h3>
-                        <p className="text-xl">{proyek.tanggal_mulai}</p>
+                        <h3 className="text-gray-300 mb-2">Tanggal Mulai</h3>
+                        <p className="text-xl text-white">{proyek.tanggal_mulai}</p>
                     </div>
-
                     <div>
-                        <h3 className="text-gray-600 mb-2">Tanggal Selesai</h3>
-                        <p className="text-xl">{proyek.tanggal_selesai}</p>
+                        <h3 className="text-gray-300 mb-2">Tanggal Selesai</h3>
+                        <p className="text-xl text-white">{proyek.tanggal_selesai}</p>
                     </div>
-
                     <div>
-                        <h3 className="text-gray-600 mb-2">Kontraktor</h3>
-                        <p className="text-xl">{kontraktor?.nama || 'Tidak ada kontraktor'}</p>
+                        <h3 className="text-gray-300 mb-2">Kontraktor</h3>
+                        <p className="text-xl text-white">{kontraktor?.nama || 'Tidak ada kontraktor'}</p>
                     </div>
-
                     <div>
-                        <h3 className="text-gray-600 mb-2">Status</h3>
+                        <h3 className="text-gray-300 mb-2">Status</h3>
                         {isEditing ? (
                             <div className="flex items-center space-x-4">
                                 <select
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
-                                    className="w-full p-2 border rounded"
+                                    className="w-full p-2 border rounded bg-gray-800 text-white"
                                 >
                                     <option value="Belum Dimulai">Belum Dimulai</option>
                                     <option value="Dalam Pengerjaan">Dalam Pengerjaan</option>
@@ -141,7 +137,7 @@ const DetailProyek = () => {
                                 </select>
                                 <button
                                     onClick={handleStatusUpdate}
-                                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
                                 >
                                     Simpan
                                 </button>
@@ -150,7 +146,7 @@ const DetailProyek = () => {
                                         setIsEditing(false);
                                         setStatus(proyek.status);
                                     }}
-                                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                                    className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
                                 >
                                     Batal
                                 </button>
@@ -158,14 +154,14 @@ const DetailProyek = () => {
                         ) : (
                             <div className="flex items-center space-x-4">
                                 <span className={`px-3 py-1 rounded-full text-sm font-semibold
-                                    ${status === "Selesai" ? "bg-green-100 text-green-800" :
-                                    status === "Dalam Pengerjaan" ? "bg-yellow-100 text-yellow-800" :
-                                        "bg-gray-100 text-gray-800"}`}>
+                                    ${status === "Selesai" ? "bg-green-200 text-green-900" :
+                                    status === "Dalam Pengerjaan" ? "bg-yellow-200 text-yellow-900" :
+                                        "bg-gray-700 text-gray-200"}`}>
                                     {status}
                                 </span>
                                 <button
                                     onClick={() => setIsEditing(true)}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
                                 >
                                     Ubah Status
                                 </button>
@@ -177,5 +173,6 @@ const DetailProyek = () => {
         </div>
     );
 };
+
 
 export default DetailProyek;
